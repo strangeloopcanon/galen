@@ -1,0 +1,294 @@
+{
+    "protein_links in db/ProteinNetwork.db": [
+        {
+            "column_name": "protein1",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "protein2",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "neighborhood",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "neighborhood_transferred",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "fusion",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "cooccurence",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "homology",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "coexpression",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "coexpression_transferred",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "experiments",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "experiments_transferred",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "database",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "database_transferred",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "textmining",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "textmining_transferred",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "combined_score",
+            "data_type": "VARCHAR"
+        }
+    ],
+    "DepMap in db/DepMap.db": [
+        {
+            "column_name": "gene_name",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "ModelID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PatientID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "CellLineName",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "StrippedCellLineName",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "DepmapModelType",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OncotreeLineage",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OncotreePrimaryDisease",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OncotreeSubtype",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OncotreeCode",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "LegacyMolecularSubtype",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PatientMolecularSubtype",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "RRID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "Age",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "AgeCategory",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "Sex",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PatientRace",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PrimaryOrMetastasis",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "SampleCollectionSite",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "SourceType",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "SourceDetail",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "TreatmentStatus",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "TreatmentDetails",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "GrowthPattern",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OnboardedMedia",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "FormulationID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "EngineeredModel",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "TissueOrigin",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "CCLEName",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "CatalogNumber",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PlateCoating",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "ModelDerivationMaterial",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "PublicComments",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "WTSIMasterCellID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "SangerModelID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "COSMICID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "LegacySubSubtype",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "dependency",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "expression",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "copy_number",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "Chrom",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "DNAChange",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "ProteinChange",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "VariantType",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "VariantInfo",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "EnsemblGeneID",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "HgncName",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "GcContent",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "VepImpact",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "VepBiotype",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "Sift",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "Polyphen",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "GnomadeAF",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "GnomadgAF",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "OncogeneHighImpact",
+            "data_type": "VARCHAR"
+        },
+        {
+            "column_name": "TumorSuppressorHighImpact",
+            "data_type": "VARCHAR"
+        }
+    ]
+}
