@@ -1,6 +1,8 @@
 # galen-evals
 A coworker for life sciences!
 
+This is the evals part of the repo! For the full shebang, it's here at ![Galen](https://github.com/marquisdepolis/galen)
+
 Most work we do in professional settings are task based. Sure, we hire people based on how well they did in abstract tests like GMAT, but what you want them to actually do are tasks. And tasks are what we need to test LLMs for. 
 
 We learnt this the hard way, starting with dreams of training a cool model before figuring out what's actually needed! That's the purpose of this repo, to test LLMs against a set list of tasks and to evaluate them.
