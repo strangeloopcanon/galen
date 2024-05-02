@@ -276,8 +276,6 @@ if __name__ == '__main__':
     INSTRUCTION = info.get('DB_instructions')
     OBJECTIVE = info.get('objective')
     GPT_MODEL = info.get('GPT_4')
-    # CLAUDE = info.get('CLAUDE')
-    # OLLAMA = info.get('OLLAMA')
     VISUAL_INSTRUCTIONS = info.get('Visual_Builder')
 
     openai_client_session = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY'))
