@@ -12,6 +12,22 @@ log_path = os.path.join(dirname, 'logs')
 final_schema, tables = rdq.get_schema_and_table_list(config_path)
 info = rdq.read_json(os.path.join(config_path, 'info.json'))
 
+def extract_SQL(query):
+    """run SQL code"""
+    from temp1 import main
+    df = main(query, log_path)
+    print(df)
+    return df
+
+results_df = extract_SQL(resp.sql[0])
+
+def visualise(df):
+    """visualise the dataframe"""
+    from temp2 import visualize
+    chart = visualize(df)
+    print(chart)
+    return chart
+
 def main():
     openai_client_session = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY'))
 
@@ -41,9 +57,10 @@ def main():
             user_prompt = [user_text_query]
             df_returned = rdq.validate_the_query(openai_client_session, final_schema, tables, user_prompt,
                                                  INSTRUCTION, GPT_MODEL, log_path)
-
+            # df_returned = extract_SQL(user_prompt)
             dataframe_placeholder.write(df_returned)
             visualization_placeholder.write(rdq.generate_visual_from_df(openai_client_session, user_prompt, user_visual_type_query, VISUAL_INSTRUCTIONS, GPT_MODEL, df_returned))
+            # visualise(df_returned)
 
     if ask_research_questions:
         # Input for research paper questions
