@@ -10,6 +10,8 @@ load_dotenv()
 from utils.retry import retry_except
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+system_message = "You are an AI trained to be a brilliant computational biologist and data analyst. You are brilliant and conscientious."
+
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
 def llm_call_gpt(input, GPT):
@@ -19,7 +21,7 @@ def llm_call_gpt(input, GPT):
     response = client.chat.completions.create(
         model=GPT,
         messages=[
-            {"role": "system", "content": """You are an AI designed to solve word puzzles. You are brilliant and clever."""},
+            {"role": "system", "content": system_message},
             {"role": "user", "content": f"{input}"}
         ]
     )
@@ -58,7 +60,7 @@ def llm_call_gpt_json(input, GPT):
     response = client.chat.completions.create(
         model=GPT,
         messages=[
-            {"role": "system", "content": """You are an AI designed to solve word puzzles. You are brilliant and clever."""},
+            {"role": "system", "content": system_message},
             {"role": "user", "content": f"Respond in JSON. {input}"}
         ],
         response_format={ "type": "json_object" }
@@ -75,7 +77,7 @@ def llm_call_claude(input, LLM):
         messages=[
             {"role": "user", "content": f"{input}"}
         ],
-        system="You are an AI designed to solve word puzzles. You are brilliant and clever.",
+        system=system_message,
         max_tokens=4096,
     )
     return response.content[0].text
@@ -124,9 +126,7 @@ def llm_call_ollama(prompt, LLM = "llama3:8b"):
 
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
 def llm_call_groq(prompt, model:str="llama3-70b-8192"):
-    system_prompt = '''
-    Your are an exceptional data analyst
-    '''
+    system_prompt = system_message
     client = Groq()
     messages = [{
             "role": "system",
