@@ -7,18 +7,10 @@ We learnt this the hard way, starting with dreams of training a cool model befor
 
 # What you need to run this
 1. OpenAI API key
-2. Replicate API key
+2. Groq API key (if you choose)
 3. Add them to your .env file
-4. A list of questions that are relevant to your job
-
-# Steps for evals
-1. Update the configfile.json if needed. Oh and check the knowledgebase.json and perturbations.json inside utils to see if they have verisimilitude!
-2. Run the perturbations file to get various OSS LLM responses, choose the ones you want in the code
-3. Run response_gpt4 same to get GPT-4 responses
-4. Do the same for DB and RAG files, having put the relevant parts in the folders
-5. Combine the results files, then change the format to select combined file
-5. Run eval_by_gpt4 to get GPT-4 to evaluate the answers
-6. Run human eval if you can
+4. Database files (we're currently BYOD until we open up ours)
+5. Questions you want to ask
 
 # Charts!
 ![Latency vs Ranking across models](Galen-Evals/charts/galen_latency_vs_ranking_across_models.png)
@@ -33,21 +25,14 @@ Mixtral is really slow with DB, and GPT stays winning in terms of speed. Yi's th
 ![Latency](Galen-Evals/charts/galen_latency_distribution_across_models.png)
 GPT is the one that's solved cold start problem the best
 
-# Files
-The crucial ones are:
-1. questions.xlsx, which has the list of Questions we want to ask. This is the starting point, and what you should generate from your job!
-2. "results grouped by question" which has the final list of answers from all LLMs
-3. model_rankings.xlsx with the rankings for the final list of answers that were evaluated
-4. All other files are intermediate creations, kept for auditing and any error checks
-
 # To do
 There's plenty to do, but in no order:
-1. Create a test for tasks that combine the abilities together - search/ doc reading/ coding etc
-2. Create tests against other hosting services (and more LLMs)
-3. Speed up GPT execution by parallelising the API calls
-4. Create "knowledgebase" and "perturbations" automatically from given information/ documents
-5. Enable LLMs to write reports on a given topic, and then run PageRank on it afterwards based on RAG over a question set on it
-6. Create a "Best Answer" for the questions in case we want to measure the answers against that - (can also use this to DPO the models later as needed)
-7. Create a way to perturb the questions to see how well the LLMs react to new info coming in [Done]
-8. Create a way to provide a "knowledgebase" to see how good the LLMs are at asking for help from the right quarters [Done]
-9. Add answer clusters and plotting w.r.t categories to the automated model ranking file
+1. Add a separate data analysis planner module
+2. Create a code analyser with error correction loop, split out visualisation
+3. Create a "working memory" for intermediate storage, and a "permanent memory" for continuous updating, eg of extracted info from documents
+4. Fix table/ data updating from input PDFs
+5. Enable LLMs to write reports on a given topic, and then run PageRank on it afterwards based on RAG over a question set on it (also in evals)
+6. Create a "Best Answer" for the questions in case we want to measure the answers against that - (can also use this to DPO the models later as needed) (also for evals)
+7. Create a code repository of clean written code over time for retrieval and usage
+8. Add answer summarisation (as above)
+9. Add RAG and ongoing index update
