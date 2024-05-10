@@ -1,3 +1,4 @@
+from groq import Groq
 from openai import OpenAI
 from anthropic import Anthropic
 import os
@@ -120,6 +121,22 @@ def llm_call_ollama(prompt, LLM = "llama3:8b"):
 
     print(full_response)
     return full_response
+
+@retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
+def llm_call_groq(prompt, model:str="llama3-70b-8192"):
+    system_prompt = '''
+    Your are an exceptional data analyst
+    '''
+    client = Groq()
+    messages = [{
+            "role": "system",
+            "content": system_prompt
+        }, 
+        {
+            "role": "user",
+            "content": prompt
+        }]
+    return client.chat.completions.create(messages=messages, model=model)
 
 def submit_message_and_create_run(client, assistant_id, prompt):
     """
