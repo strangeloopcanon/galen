@@ -12,16 +12,30 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 
 system_message = "You are an AI trained to be a brilliant computational biologist and data analyst. You are brilliant and conscientious."
 
+system_message_plan = '''
+Your job is to take a user query and create a specific set of instructions and a plan to follow to perfectly and completely solve the user query.
+
+You will be provided a schema if needed in the user query.
+
+Your instructions each should be self-contained and part of the overall plan.
+1. Step 1
+2. Step 2
+3. Step 3
+...
+
+These instructions should comprise of the full pipeline of data analysis. Think deeply about the data available from the schema, the analyses required, and the result you need to get.
+'''
+
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt(input, GPT):
+def llm_call_gpt(input, system_p = system_message, GPT):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
     response = client.chat.completions.create(
         model=GPT,
         messages=[
-            {"role": "system", "content": system_message},
+            {"role": "system", "content": system_p},
             {"role": "user", "content": f"{input}"}
         ]
     )
@@ -53,14 +67,14 @@ def llm_call_gpt_assistant(input, INSTRUCTION, GPT):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt_json(input, GPT):
+def llm_call_gpt_json(input, system_p = system_message, GPT):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
     response = client.chat.completions.create(
         model=GPT,
         messages=[
-            {"role": "system", "content": system_message},
+            {"role": "system", "content": system_p},
             {"role": "user", "content": f"Respond in JSON. {input}"}
         ],
         response_format={ "type": "json_object" }
@@ -69,7 +83,7 @@ def llm_call_gpt_json(input, GPT):
 
 # @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_claude(input, LLM):
+def llm_call_claude(input, system_p = system_message, LLM):
     client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
     response = client.messages.create(
@@ -77,7 +91,7 @@ def llm_call_claude(input, LLM):
         messages=[
             {"role": "user", "content": f"{input}"}
         ],
-        system=system_message,
+        system=system_p,
         max_tokens=4096,
     )
     return response.content[0].text
@@ -125,8 +139,8 @@ def llm_call_ollama(prompt, LLM = "llama3:8b"):
     return full_response
 
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_groq(prompt, model:str="llama3-70b-8192"):
-    system_prompt = system_message
+def llm_call_groq(prompt, system_p = system_message, model:str="llama3-70b-8192"):
+    system_prompt = system_p
     client = Groq()
     messages = [{
             "role": "system",
