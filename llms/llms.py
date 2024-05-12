@@ -26,9 +26,11 @@ Your instructions each should be self-contained and part of the overall plan.
 These instructions should comprise of the full pipeline of data analysis. Think deeply about the data available from the schema, the analyses required, and the result you need to get.
 '''
 
+temp = 0.0
+
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt(input, system_p = system_message, GPT):
+def llm_call_gpt(input, system_p = system_message, temperature = temp, GPT):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -43,7 +45,7 @@ def llm_call_gpt(input, system_p = system_message, GPT):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt_assistant(input, INSTRUCTION, GPT):
+def llm_call_gpt_assistant(input, INSTRUCTION, temperature = temp, GPT):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -67,7 +69,7 @@ def llm_call_gpt_assistant(input, INSTRUCTION, GPT):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt_json(input, system_p = system_message, GPT):
+def llm_call_gpt_json(input, system_p = system_message, temperature = temp, GPT):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -83,7 +85,7 @@ def llm_call_gpt_json(input, system_p = system_message, GPT):
 
 # @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_claude(input, system_p = system_message, LLM):
+def llm_call_claude(input, system_p = system_message, temperature = temp, LLM):
     client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
     response = client.messages.create(
@@ -98,7 +100,7 @@ def llm_call_claude(input, system_p = system_message, LLM):
 
 # @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_ollama_json(prompt, LLM = "llama3:8b"):
+def llm_call_ollama_json(prompt, system_p = system_message, temperature = temp, LLM = "llama3:8b"):
     r = requests.post('http://0.0.0.0:11434/api/generate',
                       json={
                           'model': LLM, #llama2:7b
@@ -119,7 +121,7 @@ def llm_call_ollama_json(prompt, LLM = "llama3:8b"):
     return full_response
 
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_ollama(prompt, LLM = "llama3:8b"):
+def llm_call_ollama(prompt, system_p = system_message, temperature = temp, LLM = "llama3:8b"):
     r = requests.post('http://0.0.0.0:11434/api/generate',
                       json={
                           'model': LLM, #llama2:7b
@@ -139,7 +141,7 @@ def llm_call_ollama(prompt, LLM = "llama3:8b"):
     return full_response
 
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_groq(prompt, system_p = system_message, model:str="llama3-70b-8192"):
+def llm_call_groq(prompt, system_p = system_message, temperature = temp, model:str="llama3-70b-8192"):
     system_prompt = system_p
     client = Groq()
     messages = [{

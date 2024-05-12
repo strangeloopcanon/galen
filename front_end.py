@@ -55,12 +55,11 @@ def main():
 
         if user_text_query and user_visual_type_query:
             user_prompt = [user_text_query]
-            df_returned = rdq.validate_the_query(openai_client_session, final_schema, tables, user_prompt,
-                                                 INSTRUCTION, GPT_MODEL, log_path)
-            # df_returned = extract_SQL(user_prompt)
+            # df_returned = rdq.validate_the_query(openai_client_session, final_schema, tables, user_prompt, INSTRUCTION, GPT_MODEL, log_path)
+            df_returned = extract_SQL(user_prompt)
             dataframe_placeholder.write(df_returned)
-            visualization_placeholder.write(rdq.generate_visual_from_df(openai_client_session, user_prompt, user_visual_type_query, VISUAL_INSTRUCTIONS, GPT_MODEL, df_returned))
-            # visualise(df_returned)
+            # visualization_placeholder.write(rdq.generate_visual_from_df(openai_client_session, user_prompt, user_visual_type_query, VISUAL_INSTRUCTIONS, GPT_MODEL, df_returned))
+            visualise(df_returned)
 
     if ask_research_questions:
         # Input for research paper questions
