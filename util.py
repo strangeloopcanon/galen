@@ -62,7 +62,7 @@ def execute_function_call(response):
             query = arguments["query"]
             result = extract_SQL(query)
         elif function_name == "visualise":
-            code = arguments["code"]
+            code = arguments["vis_code"]
             result = visualise(code)
         else:
             result = f"Error: function {function_name} does not exist"

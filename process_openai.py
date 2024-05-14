@@ -3,6 +3,7 @@ import json
 import subprocess
 from openai import OpenAI
 from util import read_json, get_schema_and_table_list, execute_function_call, visualise
+from custom_functions import custom_functions
 
 def process_query(query):
     if isinstance(query, list) and all(isinstance(item, dict) and 'role' in item and 'content' in item for item in query):
@@ -33,43 +34,6 @@ def main(query):
     info = read_json(os.path.join(config_path, 'info.json'))
 
     GPT_MODEL = info.get('GPT_4')
-
-    custom_functions = [
-        {
-            "type": "function",
-            "function": {
-                'name': 'extract_SQL',
-                'description': 'Generate SQL query to answer a given question from attached SQLITE databases.',
-                'parameters': {
-                    'type': 'object',
-                    'properties': {
-                        'query': {
-                            'type': 'string',
-                            'description': 'The query that the user asked for to return information from attached SQLITE databases'
-                        }
-                    },
-                    "required": ["query"]
-                }
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                'name': 'visualise',
-                'description': 'Perfect python code thats ready to run, of a visualisation of given data or a csv',
-                'parameters': {
-                    'type': 'object',
-                    'properties': {
-                        'code': {
-                            'type': 'string',
-                            'description': 'A perfect python function to do analysis as asked, comprehensive with all relevant import functions, ready to be run.'
-                        }
-                    }
-                },
-                "required": ["code"]
-            }
-        }
-    ]
 
     client = OpenAI()
 
