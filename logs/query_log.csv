@@ -279,3 +279,115 @@ Peripheral Nervous System           -0.338188
                   Thyroid           -0.236543
                    Uterus           -0.287756
              Vulva/Vagina           -0.204557"
+"SELECT OncotreeLineage, AVG(CAST(dependency AS FLOAT)) as average_dependency FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage;","          OncotreeLineage  average_dependency
+         Ampulla of Vater           -0.087117
+            Biliary Tract           -0.130832
+    Bladder/Urinary Tract           -0.054564
+                     Bone           -0.276951
+                    Bowel           -0.144225
+                   Breast           -0.280210
+                CNS/Brain           -0.193009
+                   Cervix           -0.291955
+        Esophagus/Stomach           -0.202513
+                      Eye            0.035146
+            Head and Neck           -0.023899
+                   Kidney           -0.276299
+                    Liver           -0.382136
+                     Lung           -0.164992
+                 Lymphoid           -0.939241
+                  Myeloid           -0.564363
+     Ovary/Fallopian Tube           -0.275381
+                 Pancreas            0.161692
+Peripheral Nervous System           -0.338188
+                   Pleura           -0.093816
+                 Prostate           -0.243021
+                     Skin           -0.204048
+              Soft Tissue           -0.297804
+                   Testis           -0.047182
+                  Thyroid           -0.236543
+                   Uterus           -0.287756
+             Vulva/Vagina           -0.204557"
+"SELECT OncotreeLineage, AVG(CAST(dependency AS FLOAT)) as average_dependency FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage;","          OncotreeLineage  average_dependency
+         Ampulla of Vater           -0.087117
+            Biliary Tract           -0.130832
+    Bladder/Urinary Tract           -0.054564
+                     Bone           -0.276951
+                    Bowel           -0.144225
+                   Breast           -0.280210
+                CNS/Brain           -0.193009
+                   Cervix           -0.291955
+        Esophagus/Stomach           -0.202513
+                      Eye            0.035146
+            Head and Neck           -0.023899
+                   Kidney           -0.276299
+                    Liver           -0.382136
+                     Lung           -0.164992
+                 Lymphoid           -0.939241
+                  Myeloid           -0.564363
+     Ovary/Fallopian Tube           -0.275381
+                 Pancreas            0.161692
+Peripheral Nervous System           -0.338188
+                   Pleura           -0.093816
+                 Prostate           -0.243021
+                     Skin           -0.204048
+              Soft Tissue           -0.297804
+                   Testis           -0.047182
+                  Thyroid           -0.236543
+                   Uterus           -0.287756
+             Vulva/Vagina           -0.204557"
+"SELECT OncotreeLineage, AVG(dependency) AS avg_dependency, AVG(expression) AS avg_expression, AVG(copy_number) AS avg_copy_number FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage","          OncotreeLineage  avg_dependency  avg_expression  avg_copy_number
+         Ampulla of Vater       -0.087117        4.827875         1.238597
+            Biliary Tract       -0.130832        3.493976         0.925475
+    Bladder/Urinary Tract       -0.054564        4.308330         0.960198
+                     Bone       -0.276951        4.435137         1.000691
+                    Bowel       -0.144225        4.030126         0.885999
+                   Breast       -0.280210        4.152758         0.921208
+                CNS/Brain       -0.193009        4.118145         0.931611
+                   Cervix       -0.291955        3.712490         0.994756
+        Esophagus/Stomach       -0.202513        4.338899         0.951602
+                      Eye        0.035146        3.812839         1.031919
+            Head and Neck       -0.023899        3.579702         0.935808
+                   Kidney       -0.276299        3.888002         0.948960
+                    Liver       -0.382136        4.420410         0.966873
+                     Lung       -0.164992        4.306419         0.897977
+                 Lymphoid       -0.939241        4.490047         0.991198
+                  Myeloid       -0.564363        4.256238         0.951263
+     Ovary/Fallopian Tube       -0.275381        3.926860         0.905351
+                 Pancreas        0.161692        3.946106         0.893026
+Peripheral Nervous System       -0.338188        4.266664         0.954802
+                   Pleura       -0.093816        3.815773         0.772363
+                 Prostate       -0.243021        3.794268         0.898839
+                     Skin       -0.204048        4.262473         1.092400
+              Soft Tissue       -0.297804        3.918024         0.989994
+                   Testis       -0.047182        3.266043         0.876306
+                  Thyroid       -0.236543        3.575775         0.879457
+                   Uterus       -0.287756        4.214538         0.958749
+             Vulva/Vagina       -0.204557        2.461127         1.112062"
+"SELECT OncotreeLineage, AVG(dependency) AS avg_dependency, AVG(expression) AS avg_expression, AVG(copy_number) AS avg_copy_number FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage","          OncotreeLineage  avg_dependency  avg_expression  avg_copy_number
+         Ampulla of Vater       -0.087117        4.827875         1.238597
+            Biliary Tract       -0.130832        3.493976         0.925475
+    Bladder/Urinary Tract       -0.054564        4.308330         0.960198
+                     Bone       -0.276951        4.435137         1.000691
+                    Bowel       -0.144225        4.030126         0.885999
+                   Breast       -0.280210        4.152758         0.921208
+                CNS/Brain       -0.193009        4.118145         0.931611
+                   Cervix       -0.291955        3.712490         0.994756
+        Esophagus/Stomach       -0.202513        4.338899         0.951602
+                      Eye        0.035146        3.812839         1.031919
+            Head and Neck       -0.023899        3.579702         0.935808
+                   Kidney       -0.276299        3.888002         0.948960
+                    Liver       -0.382136        4.420410         0.966873
+                     Lung       -0.164992        4.306419         0.897977
+                 Lymphoid       -0.939241        4.490047         0.991198
+                  Myeloid       -0.564363        4.256238         0.951263
+     Ovary/Fallopian Tube       -0.275381        3.926860         0.905351
+                 Pancreas        0.161692        3.946106         0.893026
+Peripheral Nervous System       -0.338188        4.266664         0.954802
+                   Pleura       -0.093816        3.815773         0.772363
+                 Prostate       -0.243021        3.794268         0.898839
+                     Skin       -0.204048        4.262473         1.092400
+              Soft Tissue       -0.297804        3.918024         0.989994
+                   Testis       -0.047182        3.266043         0.876306
+                  Thyroid       -0.236543        3.575775         0.879457
+                   Uterus       -0.287756        4.214538         0.958749
+             Vulva/Vagina       -0.204557        2.461127         1.112062"

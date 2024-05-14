@@ -1,5 +1,6 @@
 import os
 import json
+import inspect
 import pandas as pd
 
 def read_json(file_path):
@@ -38,24 +39,48 @@ def visualise(df):
     return chart
 
 def execute_function_call(response):
-    try:
-        tool_call = response.choices[0].message.tool_calls[0]
-    except AttributeError as e:
-        print("Error accessing tool_calls:", e)
-        print("Response structure:", response)
-        return None
+    # Determine the caller file
+    stack = inspect.stack()
+    caller_file = stack[1].filename
+    
+    # Debugging: Print the caller file
+    print("Called from:", caller_file)
 
-    function_name = tool_call.function.name
-    arguments = json.loads(tool_call.function.arguments)
-    result = None
+    # Process based on the caller
+    if 'process_openai.py' in caller_file:
+        # Handle the response structure for process_openai.py
+        try:
+            tool_call = response.choices[0].message.tool_calls[0]
+            function_name = tool_call.function.name
+            arguments = json.loads(tool_call.function.arguments)
+        except AttributeError as e:
+            print("Error accessing tool_calls:", e)
+            print("Response structure:", response)
+            return None
 
-    if function_name == "extract_SQL":
-        query = arguments["query"]
-        result = extract_SQL(query)
-    elif function_name == "visualise":
-        code = arguments["code"]
-        result = visualise(code)
+        if function_name == "extract_SQL":
+            query = arguments["query"]
+            result = extract_SQL(query)
+        elif function_name == "visualise":
+            code = arguments["code"]
+            result = visualise(code)
+        else:
+            result = f"Error: function {function_name} does not exist"
+    
+    elif 'process_groq.py' in caller_file:
+        # Directly handle the SQL extraction and visualization for process_groq.py
+        try:
+            sql_query = response
+            result = extract_SQL(sql_query)
+            if result is not None:
+                result = visualise(result)
+        except (AttributeError, KeyError) as e:
+            print("Error processing response:", e)
+            print("Response structure:", response)
+            return None
+    
     else:
-        result = f"Error: function {function_name} does not exist"
+        print("Unknown caller file")
+        return None
     
     return result
