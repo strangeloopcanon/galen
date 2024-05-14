@@ -15,6 +15,8 @@ info = rdq.read_json(os.path.join(config_path, 'info.json'))
 def extract_SQL(query):
     """run SQL code"""
     from temp1 import main
+    if isinstance(query, list):
+        query = query[0]  # Convert list to string if needed
     df = main(query, log_path)
     print(df)
     return df
@@ -59,7 +61,7 @@ def main():
             df_returned = extract_SQL(user_prompt)
             dataframe_placeholder.write(df_returned)
             # visualization_placeholder.write(rdq.generate_visual_from_df(openai_client_session, user_prompt, user_visual_type_query, VISUAL_INSTRUCTIONS, GPT_MODEL, df_returned))
-            visualise(df_returned)
+            # visualization_placeholder.write(visualise(df_returned))
 
     if ask_research_questions:
         # Input for research paper questions
