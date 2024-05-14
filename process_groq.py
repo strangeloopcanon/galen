@@ -16,13 +16,10 @@ def main(query):
 
     resp = client.chat.completions.create(
         model="llama3-70b-8192",
-        messages=[
-            {
-                "role": "user",
-                "content": query
-            }
-        ],
         response_model=Query,
+        messages=[
+            {"role": "user","content": query},
+        ],
         temperature=0,
     )
 
