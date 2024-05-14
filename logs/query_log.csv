@@ -1,0 +1,113 @@
+Query,Result
+"SELECT OncotreeLineage, AVG(dependency) as avg_dependency FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage;","              OncotreeLineage  avg_dependency
+0            Ampulla of Vater       -0.087117
+1               Biliary Tract       -0.130832
+2       Bladder/Urinary Tract       -0.054564
+3                        Bone       -0.276951
+4                       Bowel       -0.144225
+5                      Breast       -0.280210
+6                   CNS/Brain       -0.193009
+7                      Cervix       -0.291955
+8           Esophagus/Stomach       -0.202513
+9                         Eye        0.035146
+10              Head and Neck       -0.023899
+11                     Kidney       -0.276299
+12                      Liver       -0.382136
+13                       Lung       -0.164992
+14                   Lymphoid       -0.939241
+15                    Myeloid       -0.564363
+16       Ovary/Fallopian Tube       -0.275381
+17                   Pancreas        0.161692
+18  Peripheral Nervous System       -0.338188
+19                     Pleura       -0.093816
+20                   Prostate       -0.243021
+21                       Skin       -0.204048
+22                Soft Tissue       -0.297804
+23                     Testis       -0.047182
+24                    Thyroid       -0.236543
+25                     Uterus       -0.287756
+26               Vulva/Vagina       -0.204557"
+"SELECT OncotreeLineage, AVG(CAST(dependency AS FLOAT)) AS avg_dependency FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage;","              OncotreeLineage  avg_dependency
+0            Ampulla of Vater       -0.087117
+1               Biliary Tract       -0.130832
+2       Bladder/Urinary Tract       -0.054564
+3                        Bone       -0.276951
+4                       Bowel       -0.144225
+5                      Breast       -0.280210
+6                   CNS/Brain       -0.193009
+7                      Cervix       -0.291955
+8           Esophagus/Stomach       -0.202513
+9                         Eye        0.035146
+10              Head and Neck       -0.023899
+11                     Kidney       -0.276299
+12                      Liver       -0.382136
+13                       Lung       -0.164992
+14                   Lymphoid       -0.939241
+15                    Myeloid       -0.564363
+16       Ovary/Fallopian Tube       -0.275381
+17                   Pancreas        0.161692
+18  Peripheral Nervous System       -0.338188
+19                     Pleura       -0.093816
+20                   Prostate       -0.243021
+21                       Skin       -0.204048
+22                Soft Tissue       -0.297804
+23                     Testis       -0.047182
+24                    Thyroid       -0.236543
+25                     Uterus       -0.287756
+26               Vulva/Vagina       -0.204557"
+"SELECT OncotreeLineage, AVG(CAST(dependency AS FLOAT)) AS avg_dependency FROM DepMap WHERE gene_name = 'EP300' GROUP BY OncotreeLineage","              OncotreeLineage  avg_dependency
+0            Ampulla of Vater       -0.087117
+1               Biliary Tract       -0.130832
+2       Bladder/Urinary Tract       -0.054564
+3                        Bone       -0.276951
+4                       Bowel       -0.144225
+5                      Breast       -0.280210
+6                   CNS/Brain       -0.193009
+7                      Cervix       -0.291955
+8           Esophagus/Stomach       -0.202513
+9                         Eye        0.035146
+10              Head and Neck       -0.023899
+11                     Kidney       -0.276299
+12                      Liver       -0.382136
+13                       Lung       -0.164992
+14                   Lymphoid       -0.939241
+15                    Myeloid       -0.564363
+16       Ovary/Fallopian Tube       -0.275381
+17                   Pancreas        0.161692
+18  Peripheral Nervous System       -0.338188
+19                     Pleura       -0.093816
+20                   Prostate       -0.243021
+21                       Skin       -0.204048
+22                Soft Tissue       -0.297804
+23                     Testis       -0.047182
+24                    Thyroid       -0.236543
+25                     Uterus       -0.287756
+26               Vulva/Vagina       -0.204557"
+"SELECT OncotreeLineage, AVG(CAST(dependency AS REAL)) AS avg_dependency FROM DepMap WHERE gene_name='EP300' GROUP BY OncotreeLineage;","              OncotreeLineage  avg_dependency
+0            Ampulla of Vater       -0.087117
+1               Biliary Tract       -0.130832
+2       Bladder/Urinary Tract       -0.054564
+3                        Bone       -0.276951
+4                       Bowel       -0.144225
+5                      Breast       -0.280210
+6                   CNS/Brain       -0.193009
+7                      Cervix       -0.291955
+8           Esophagus/Stomach       -0.202513
+9                         Eye        0.035146
+10              Head and Neck       -0.023899
+11                     Kidney       -0.276299
+12                      Liver       -0.382136
+13                       Lung       -0.164992
+14                   Lymphoid       -0.939241
+15                    Myeloid       -0.564363
+16       Ovary/Fallopian Tube       -0.275381
+17                   Pancreas        0.161692
+18  Peripheral Nervous System       -0.338188
+19                     Pleura       -0.093816
+20                   Prostate       -0.243021
+21                       Skin       -0.204048
+22                Soft Tissue       -0.297804
+23                     Testis       -0.047182
+24                    Thyroid       -0.236543
+25                     Uterus       -0.287756
+26               Vulva/Vagina       -0.204557"

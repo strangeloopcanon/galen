@@ -19,7 +19,7 @@ def extract_SQL(query):
     print(df)
     return df
 
-results_df = extract_SQL(resp.sql[0])
+# results_df = extract_SQL(resp.sql[0])
 
 def visualise(df):
     """visualise the dataframe"""

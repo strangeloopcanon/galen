@@ -30,7 +30,7 @@ temp = 0.0
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt(input, system_p = system_message, temperature = temp, GPT):
+def llm_call_gpt(input, GPT, system_p = system_message, temperature = temp):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -45,7 +45,7 @@ def llm_call_gpt(input, system_p = system_message, temperature = temp, GPT):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt_assistant(input, INSTRUCTION, temperature = temp, GPT):
+def llm_call_gpt_assistant(input, INSTRUCTION, GPT, temperature = temp):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -69,7 +69,7 @@ def llm_call_gpt_assistant(input, INSTRUCTION, temperature = temp, GPT):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_gpt_json(input, system_p = system_message, temperature = temp, GPT):
+def llm_call_gpt_json(input, GPT, system_p = system_message, temperature = temp):
     client = OpenAI()
     client.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -85,7 +85,7 @@ def llm_call_gpt_json(input, system_p = system_message, temperature = temp, GPT)
 
 # @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @retry_except(exceptions_to_catch=(IndexError, ZeroDivisionError), tries=3, delay=2)
-def llm_call_claude(input, system_p = system_message, temperature = temp, LLM):
+def llm_call_claude(input, LLM, system_p = system_message, temperature = temp):
     client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
     response = client.messages.create(
