@@ -111,3 +111,31 @@ Query,Result
 24                    Thyroid       -0.236543
 25                     Uterus       -0.287756
 26               Vulva/Vagina       -0.204557"
+"SELECT OncotreeLineage, AVG(dependency) AS avg_dependency, MIN(dependency) AS min_dependency, MAX(dependency) AS max_dependency FROM DepMap WHERE gene_name='EP300' GROUP BY OncotreeLineage","              OncotreeLineage  avg_dependency min_dependency max_dependency
+0            Ampulla of Vater       -0.087117   0.0294055377  -0.3502846318
+1               Biliary Tract       -0.130832   0.0500513080  -0.9852341652
+2       Bladder/Urinary Tract       -0.054564   0.0594438600  -1.2589800578
+3                        Bone       -0.276951   0.0024239860  -1.0089892004
+4                       Bowel       -0.144225   0.0143755167  -0.8498313322
+5                      Breast       -0.280210   0.0596464853  -1.3127376711
+6                   CNS/Brain       -0.193009   0.0083864766  -1.4267614980
+7                      Cervix       -0.291955   0.0627673709  -1.6330594687
+8           Esophagus/Stomach       -0.202513   0.0234454165  -1.3282992829
+9                         Eye        0.035146   0.0180638146  -0.8859987998
+10              Head and Neck       -0.023899   0.0233744948  -1.1312759261
+11                     Kidney       -0.276299   0.0957303712  -0.8691923811
+12                      Liver       -0.382136   0.1218420770  -2.0825231034
+13                       Lung       -0.164992   0.0048513637  -1.4658921860
+14                   Lymphoid       -0.939241   0.0064583454  -2.2381883492
+15                    Myeloid       -0.564363   0.0412812773  -1.4416395976
+16       Ovary/Fallopian Tube       -0.275381   0.0121589137  -0.9414492173
+17                   Pancreas        0.161692   0.0028286069  -0.6440411186
+18  Peripheral Nervous System       -0.338188   0.0079359553  -1.3663874980
+19                     Pleura       -0.093816   0.0138817660  -0.8078032937
+20                   Prostate       -0.243021   0.0273822029  -1.8278371735
+21                       Skin       -0.204048   0.0065496222  -1.1493875636
+22                Soft Tissue       -0.297804   0.0034609431  -1.0319953821
+23                     Testis       -0.047182   0.1451491464  -0.2395130648
+24                    Thyroid       -0.236543   0.3702368514  -0.9147991638
+25                     Uterus       -0.287756   0.0865281267  -0.9434793958
+26               Vulva/Vagina       -0.204557   0.0917844565  -0.5008981838"
