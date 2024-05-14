@@ -1,37 +1,28 @@
 import os
 from openai import OpenAI
-import generate_visuals_from_prompt as rdq
 import streamlit as st
-import matplotlib
-matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+from util import read_json, get_schema_and_table_list, execute_function_call, visualise, extract_SQL
+
+# Load environment variables from .env file
+load_dotenv()
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(dirname, 'config')
 log_path = os.path.join(dirname, 'logs')
 
-final_schema, tables = rdq.get_schema_and_table_list(config_path)
-info = rdq.read_json(os.path.join(config_path, 'info.json'))
-
-def extract_SQL(query):
-    """run SQL code"""
-    from run_sql import main
-    if isinstance(query, list):
-        query = query[0]  # Convert list to string if needed
-    df = main(query, log_path)
-    print(df)
-    return df
-
-# results_df = extract_SQL(resp.sql[0])
-
-def visualise(df):
-    """visualise the dataframe"""
-    from run_visualise import visualize
-    chart = visualize(df)
-    print(chart)
-    return chart
+# Initialize schema and info
+final_schema, tables = get_schema_and_table_list(config_path)
+info = read_json(os.path.join(config_path, 'info.json'))
 
 def main():
-    openai_client_session = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY'))
+    openai_api_key = os.getenv('OPENAI_API_KEY')
+    if not openai_api_key:
+        st.error("OpenAI API key is not set. Please set it in the .env file.")
+        return
+
+    openai_client = OpenAI(api_key=openai_api_key)
 
     INSTRUCTION = info.get('DB_instructions')
     GPT_MODEL = info.get('GPT_4')
@@ -57,11 +48,14 @@ def main():
 
         if user_text_query and user_visual_type_query:
             user_prompt = [user_text_query]
-            # df_returned = rdq.validate_the_query(openai_client_session, final_schema, tables, user_prompt, INSTRUCTION, GPT_MODEL, log_path)
+            # Using modular extract_SQL and visualise functions
             df_returned = extract_SQL(user_prompt)
-            dataframe_placeholder.write(df_returned)
-            # visualization_placeholder.write(rdq.generate_visual_from_df(openai_client_session, user_prompt, user_visual_type_query, VISUAL_INSTRUCTIONS, GPT_MODEL, df_returned))
-            # visualization_placeholder.write(visualise(df_returned))
+            if isinstance(df_returned, pd.DataFrame) and not df_returned.empty:
+                dataframe_placeholder.write(df_returned)
+                chart = visualise(df_returned)
+                visualization_placeholder.pyplot(chart)
+            else:
+                st.error("No data returned or the data format is incorrect.")
 
     if ask_research_questions:
         # Input for research paper questions
