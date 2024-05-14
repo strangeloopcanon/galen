@@ -1,5 +1,6 @@
 import os
 import json
+import pandas as pd
 
 def read_json(file_path):
     """Read JSON file from the given path and return the data."""
@@ -21,6 +22,12 @@ def get_schema_and_table_list(folder_path):
 def extract_SQL(query):
     """Run SQL code."""
     from run_sql import main
+    if isinstance(query, list):
+        query = query[0]  # Convert list to string if needed
+    df = main(query)  # (query, log_path)
+    print(f"extract_SQL: Type of df returned: {type(df)}")
+    print(f"extract_SQL: Content of df returned:\n{df}")
+
     df = main(query)  # (query, log_path)
     return df
 
