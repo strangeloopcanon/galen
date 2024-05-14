@@ -14,7 +14,7 @@ info = rdq.read_json(os.path.join(config_path, 'info.json'))
 
 def extract_SQL(query):
     """run SQL code"""
-    from temp1 import main
+    from run_sql import main
     if isinstance(query, list):
         query = query[0]  # Convert list to string if needed
     df = main(query, log_path)
@@ -25,7 +25,7 @@ def extract_SQL(query):
 
 def visualise(df):
     """visualise the dataframe"""
-    from temp2 import visualize
+    from run_visualise import visualize
     chart = visualize(df)
     print(chart)
     return chart

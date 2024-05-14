@@ -20,13 +20,13 @@ def get_schema_and_table_list(folder_path):
 
 def extract_SQL(query):
     """Run SQL code."""
-    from temp1 import main
+    from run_sql import main
     df = main(query)  # (query, log_path)
     return df
 
 def visualise(df):
     """Visualise the dataframe."""
-    from temp2 import visualize
+    from run_visualise import visualize
     chart = visualize(df)
     return chart
 
