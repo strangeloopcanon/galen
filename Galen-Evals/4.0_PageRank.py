@@ -12,29 +12,32 @@ def load_and_prepare_data_from_excel(excel_file_path):
     df = pd.read_excel(excel_file_path)
 
     # Determine the number of models dynamically from the columns
-    score_columns = [col for col in df.columns if col.endswith('_Score')]
+    score_columns = [col for col in df.columns if col not in ['Question', 'Reasoning', 'Category', 'AnsweredBy']]
     num_models = len(score_columns)
 
     # Initialize an empty matrix based on the number of models
     scores = np.zeros((num_models, num_models))
+    unique_models = score_columns
+    df['AnsweredBy'] = np.tile(unique_models, len(df) // num_models + 1)[:len(df)]
 
     # Calculate average scores each model gives to each other
     for i, giver_col in enumerate(score_columns):
         for j in range(num_models):
-            receiver = f'Model_{j+1}'
+            receiver = unique_models[j]
             # Get only rows where receiver is the answered model
             mask = df['AnsweredBy'] == receiver
-            filtered_scores = df.loc[mask, giver_col]
+            filtered_scores = df.loc[mask, giver_col].dropna()
             if not filtered_scores.empty:
                 scores[j, i] = filtered_scores.mean()
 
     # Normalize the scores to make each column sum to 1
     score_sums = scores.sum(axis=0)
+    score_sums[score_sums == 0] = 1  # Avoid division by zero
     normalized_scores = scores / score_sums
 
-    return normalized_scores
+    return normalized_scores, unique_models
 
-def pagerank(scores, damping_factor=0.85, max_iterations=100, tolerance=1e-6):
+def pagerank(scores, damping_factor=0.75, max_iterations=100, tolerance=1e-6):
     """
     Calculate PageRank scores given a normalized scores matrix.
     """
@@ -63,7 +66,7 @@ def save_scores_to_excel(scores, model_names, file_path):
 if __name__ == '__main__':
     # Load data and prepare scores matrix from Excel
     excel_file_path = f'files/{F_NAME}_model_rankings.xlsx'
-    normalized_scores = load_and_prepare_data_from_excel(excel_file_path)
+    normalized_scores, model_names = load_and_prepare_data_from_excel(excel_file_path)
 
     # Compute PageRank scores
     final_scores = pagerank(normalized_scores)
