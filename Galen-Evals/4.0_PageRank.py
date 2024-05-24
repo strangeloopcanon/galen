@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+from config import config
+config.set_mode("default")
+F_NAME = config.F_NAME
 
 def load_and_prepare_data_from_excel(excel_file_path):
     """
@@ -59,7 +62,7 @@ def save_scores_to_excel(scores, model_names, file_path):
 
 if __name__ == '__main__':
     # Load data and prepare scores matrix from Excel
-    excel_file_path = 'files/model_rankings.xlsx'
+    excel_file_path = f'files/{F_NAME}_model_rankings.xlsx'
     normalized_scores = load_and_prepare_data_from_excel(excel_file_path)
 
     # Compute PageRank scores
@@ -68,5 +71,5 @@ if __name__ == '__main__':
 
     # Saving the PageRank scores to Excel
     model_names = [f'Model_{i+1}' for i in range(len(final_scores))]
-    output_excel_path = 'files/PageRank_Scores.xlsx'
+    output_excel_path = f'files/{F_NAME}_PageRank_Scores.xlsx'
     save_scores_to_excel(final_scores, model_names, output_excel_path)

@@ -3,7 +3,7 @@ import pandas as pd
 import marvin
 import os
 from marvin import ai_model, ai_fn
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from typing import List
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -21,13 +21,16 @@ class Answer(BaseModel):
 
 class RankingResults(BaseModel):
     reasoning: str = Field(..., description='Reason out loud on the qualities of the Responses and how well the Model shows adaptability with respect to changes in circumstances via perturbations.json and given knowledgebase.json')
-    rating: List[int] = Field(..., description='Answer rating 1 to 5')
+    rating: List[int] = Field(..., description='Give Answer a rating from 1 to 5')
 
 @marvin.ai_fn
 def rate_responses(question: str, answers: List[Answer]) -> RankingResults:
     """
-    Analyse how well the Perturbed Response and Final Analysis Response take into account the perturbations and knowledgebase, and give ratings from 1 to 5 for Perturbation Response and Final Analysis Response. 1 is the lowest and 5 is the highest.
-    For instance, if the Final Question Response is empty, or has "I am a language model and I don't know" that is very bad."
+    Analyse how well the Perturbed Response and Final Analysis Response take into account the perturbations and knowledgebase.
+    Give a quick summary of the qualities of the responses regarding adaptability to new information.
+    Then give ratings from 1 to 5 for Perturbation Response and Final Analysis Response.
+    1 is the lowest and 5 is the highest.
+    For instance, if the Final Question Response is empty, or has "I am a language model and I don't know" that is very bad.
     If the subsequent answers take new information into account and apply them appropriately, then it's very good.
     """
 
@@ -41,15 +44,13 @@ def concatenate_question_model_response(row, df):
 
 def process_data(data):
     results = []
-    n=10
     additional_columns = ['Category', 'Type', 'Model', 'Question', 'Latency']
     for _, row in data.iterrows():
-        qn_resp = []
         qn_resp = concatenate_question_model_response(row, data)
-        print(f"The questions re: \n{qn_resp}\n")
+        print(f"The question and response are: \n{qn_resp}\n")
         answer_objects = [Answer(answer = qn_resp)]
         result = rate_responses(qn_resp, answer_objects)
-        result_dict = {'Final Analysis Question': qn_resp, 'Reasoning': result.reasoning, 'Rating': result.rating}
+        result_dict = {'Final Analysis Question + Response': qn_resp, 'Reasoning': result.reasoning, 'Rating': result.rating}
         for col in additional_columns:
             if col in row:
                 result_dict[col] = row[col]

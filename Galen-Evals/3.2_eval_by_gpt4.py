@@ -21,11 +21,11 @@ class Answer(BaseModel):
 
 class RankingResults(BaseModel):
     reasoning: str = Field(..., description='Give some thoughts on the quality of the answers')
-    ranked_answers: List[int] = Field(..., description='The ranked answer indexes')
+    ranked_answers: List[int] = Field(..., description='The ranked answer indices')
 
 @ai_fn
 def rank_answers(question: str, answers: List[Answer]) -> RankingResults:
-    '''Rank the answers to the question from best to worst'''
+    '''Rank the answers to the question from best to worst using only integers'''
 
 def read_excel(file_path):
     return pd.read_excel(file_path)
@@ -38,10 +38,8 @@ def concatenate_question_model_response(row, df):
 def process_data(data):
     results = []
     reasons = []
-    n=3
     additional_columns = ['Category', 'Type']  # Add any other additional columns here
     for _, row in data.iterrows():
-        question = []
         question = concatenate_question_model_response(row, data)
         models = [col for col in data.columns if col not in ['Question'] + additional_columns]
         answers = [row[model] for model in models if pd.notna(row[model])]

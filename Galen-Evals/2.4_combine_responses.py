@@ -1,12 +1,10 @@
-# How to combine files together into one
-import re
+import os
 import config
 import importlib
+import pandas as pd
+
 importlib.reload(config)
 from config import config, reset_config
-import pandas as pd
-from difflib import SequenceMatcher
-import json
 
 INSTRUCTION = config.INSTRUCTION
 F_NAME = config.F_NAME
@@ -21,8 +19,12 @@ def run_process_for_mode(mode):
         return ''.join(char for char in text if char.isascii())
 
     def create_combined_csv(original_csv_path, interim_csv_path, combined_csv_path):
+        if not os.path.exists(original_csv_path) or not os.path.exists(interim_csv_path):
+            print(f"One of the files does not exist: {original_csv_path} or {interim_csv_path}")
+            return False
+
         # Read the original and interim data
-        original_data = pd.read_excel(original_csv_path) #, encoding='utf-8-sig'
+        original_data = pd.read_excel(original_csv_path)
         interim_data = pd.read_excel(interim_csv_path)
 
         # Combine the data
@@ -30,6 +32,7 @@ def run_process_for_mode(mode):
 
         # Save the combined data to a new CSV file
         combined_data.to_excel(combined_csv_path, index=False)
+        return True
 
     def merge_on_contains(big_df, small_df, big_col, small_col):
         # Lowercase and strip whitespace for more effective matching
@@ -52,9 +55,20 @@ def run_process_for_mode(mode):
 
         return big_df
 
-    create_combined_csv(config.llmresults_file_path, config.gpt4results_csv_path, config.results_file_path)
+    combined_csv_created = create_combined_csv(config.llmresults_file_path, config.gpt4results_csv_path, config.results_file_path)
+
+    if not combined_csv_created:
+        return
 
     # Reading the files
+    if not os.path.exists(config.questions):
+        print(f"Questions file does not exist: {config.questions}")
+        return
+    
+    if not os.path.exists(config.results_file_path):
+        print(f"Results file does not exist: {config.results_file_path}")
+        return
+
     questions_df = pd.read_excel(config.questions)
     results_df = pd.read_excel(config.results_file_path)
 
@@ -69,9 +83,8 @@ def run_process_for_mode(mode):
     repeated_questions = pd.concat([questions_df['Question']] * num_repetitions, ignore_index=True)
     results_df['Question'] = repeated_questions
 
-    # All info saved in one results file! 
     # Save the modified DataFrame to a new Excel file
-    results_df.to_excel(config.results_file_path, index=False)  # Replace with your desired path
+    results_df.to_excel(config.results_file_path, index=False)
 
     # Applying the merge_on_contains function
     merged_df = merge_on_contains(results_df, questions_df, 'Question', 'Question')
