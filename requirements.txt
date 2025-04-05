@@ -1,0 +1,12 @@
+anthropic
+groq
+instructor
+matplotlib
+openai
+pandas
+pydantic
+python-dotenv
+Requests
+SQLAlchemy
+streamlit
+tenacity

@@ -16,6 +16,7 @@ def execute_query(sql_query):
     """
     Execute a provided SQL query using the SQLite connection and return the results as a DataFrame.
     """
+    print(f"The SQL query is: {sql_query}")
     try:
         conn, cursor = connect_sqlite()
         cursor.execute(sql_query)

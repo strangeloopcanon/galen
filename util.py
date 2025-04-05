@@ -25,11 +25,18 @@ def extract_SQL(query):
     from run_sql import main
     if isinstance(query, list):
         query = query[0]  # Convert list to string if needed
+    
+    # Check if query is SQL or not
+    if not query.strip().upper().startswith("SELECT"):
+        # This might be a natural language query - we need to send it to process_openai
+        print(f"extract_SQL: Query is not SQL, forwarding to process_openai: {query}")
+        from process_openai import main as process_query
+        return process_query([{'role': 'user', 'content': query}])
+    
+    print(f"extract_SQL: Executing SQL query: {query}")
     df = main(query)  # (query, log_path)
     print(f"extract_SQL: Type of df returned: {type(df)}")
     print(f"extract_SQL: Content of df returned:\n{df}")
-
-    df = main(query)  # (query, log_path)
     return df
 
 def visualise(df):

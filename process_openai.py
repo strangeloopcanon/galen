@@ -34,10 +34,35 @@ def main(query):
     info = read_json(os.path.join(config_path, 'info.json'))
 
     GPT_MODEL = info.get('GPT_4')
+    print(f"Using OpenAI model: {GPT_MODEL}")
 
     client = OpenAI()
 
-    response = call_fn(client, query, GPT_MODEL, custom_functions)
+    # Get the database schema and tables
+    final_schema, tables = get_schema_and_table_list(config_path)
+    
+    # Modify the query to include the schema information
+    if isinstance(query, list) and all(isinstance(item, dict) for item in query):
+        # It's already a properly formatted message array
+        messages = query
+    else:
+        # Convert to a properly formatted message
+        message_content = f"""
+        {query}
+        
+        The database schema is: {final_schema}
+        Available tables: {tables}
+        
+        The databases are already attached as:
+        ATTACH DATABASE 'db/ProteinNetwork.db' AS ProteinNetwork
+        ATTACH DATABASE 'db/DepMap.db' AS DepMap
+        
+        You do not need to attach the DBs again. Make sure you use the right table names.
+        """
+        messages = [{'role': 'user', 'content': message_content}]
+    
+    # Call the API with the new message
+    response = call_fn(client, messages, GPT_MODEL, custom_functions)
 
     # Debugging: Print the entire response object
     print("Response object:", response)
@@ -47,8 +72,8 @@ def main(query):
     
     # Visualize the dataframe
     if df is not None:
-        chart = visualise(df)
-        return chart
+        print("Dataframe successfully extracted, visualizing")
+        return df
     else:
         print("Failed to extract dataframe")
         return None

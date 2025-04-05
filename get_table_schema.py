@@ -5,7 +5,6 @@ import os
 import glob
 import sqlite3
 import json
-import config
 from sqlalchemy import create_engine, MetaData, Table, Column, String
 import re
 import logging
@@ -57,7 +56,9 @@ def save_schema_to_json(combined_schema, filename="config/combined_schema.json")
 # SQL check
 def extract_sql(llm_response: str) -> str:
     # If the llm_response contains a markdown code block, with or without the sql tag, extract the sql from it
+    print(f"The original llm response is: {llm_response}")
     sql = re.search(r"```sql\n(.*)```", llm_response, re.DOTALL)
+    print(f"The SQL query that's extracted is: {sql}")
     if sql:
         log.info(f"Output from LLM: {llm_response} \nExtracted SQL: {sql.group(1)}")
         return sql.group(1)

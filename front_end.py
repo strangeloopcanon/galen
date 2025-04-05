@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from openai import OpenAI
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -20,7 +21,13 @@ def main():
     openai_api_key = os.getenv('OPENAI_API_KEY')
     if not openai_api_key:
         st.error("OpenAI API key is not set. Please set it in the .env file.")
-        return
+        st.info("For testing purposes, you can enter a temporary API key below:")
+        temp_api_key = st.text_input("OpenAI API Key", type="password")
+        if temp_api_key:
+            os.environ['OPENAI_API_KEY'] = temp_api_key
+            openai_api_key = temp_api_key
+        else:
+            return
 
     openai_client = OpenAI(api_key=openai_api_key)
 
