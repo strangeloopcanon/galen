@@ -55,12 +55,78 @@ def main():
 
         if user_text_query and user_visual_type_query:
             user_prompt = [user_text_query]
+            
+            # DEBUGGING - log inputs
+            print(f"DEBUG INPUTS: user_text_query={user_text_query}, user_visual_type_query={user_visual_type_query}")
+            
+            # Test query to verify database connection works
+            try:
+                debug_query = "SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5"
+                from run_sql import main as run_sql_main
+                test_result = run_sql_main(debug_query)
+                print(f"DEBUG TEST QUERY: {type(test_result)}")
+                if isinstance(test_result, pd.DataFrame):
+                    print(f"DEBUG TEST QUERY SUCCESS: {test_result.shape}")
+                    print(test_result.head())
+                else:
+                    print(f"DEBUG TEST QUERY FAILED: {test_result}")
+            except Exception as e:
+                print(f"DEBUG TEST QUERY ERROR: {str(e)}")
+            
             # Using modular extract_SQL and visualise functions
             df_returned = extract_SQL(user_prompt)
             if isinstance(df_returned, pd.DataFrame) and not df_returned.empty:
+                # Display the dataframe first
                 dataframe_placeholder.write(df_returned)
-                chart = visualise(df_returned)
-                visualization_placeholder.pyplot(chart)
+                
+                # Debug info - print dataframe info and type
+                print(f"Debug - DataFrame type: {type(df_returned)}")
+                print(f"Debug - DataFrame columns: {df_returned.columns.tolist()}")
+                print(f"Debug - DataFrame shape: {df_returned.shape}")
+                
+                try:
+                    # Generate visualization
+                    chart = visualise(df_returned)
+                    
+                    # Debug visualization result
+                    print(f"Debug - Chart type: {type(chart)}")
+                    
+                    # Simple approach - just use pyplot with the figure
+                    if chart is not None:
+                        visualization_placeholder.pyplot(chart)
+                    else:
+                        # Create a basic visualization if none was returned
+                        fig, ax = plt.subplots(figsize=(10, 6))
+                        
+                        # If dataframe has numeric columns, create a bar chart
+                        numeric_cols = df_returned.select_dtypes(include=['number']).columns.tolist()
+                        string_cols = df_returned.select_dtypes(include=['object']).columns.tolist()
+                        
+                        if numeric_cols and len(df_returned) <= 20:
+                            if string_cols:
+                                df_returned.plot(kind='bar', x=string_cols[0], y=numeric_cols[0], ax=ax)
+                                plt.xticks(rotation=45, ha='right')
+                            else:
+                                df_returned.plot(kind='bar', y=numeric_cols[0], ax=ax)
+                            
+                            ax.set_title(f"Data Visualization: {numeric_cols[0]}")
+                            ax.set_ylabel(numeric_cols[0])
+                            plt.tight_layout()
+                            visualization_placeholder.pyplot(fig)
+                        else:
+                            # Just display a message if no valid chart
+                            visualization_placeholder.info("Simple data table displayed (no chart available)")
+                except Exception as viz_error:
+                    # Error handling for visualization
+                    print(f"Visualization error: {viz_error}")
+                    visualization_placeholder.error(f"Could not create visualization: {str(viz_error)}")
+                    
+                    # Create a basic text display
+                    if len(df_returned) > 0:
+                        visualization_placeholder.info("Showing data as table only (visualization failed)")
+            elif isinstance(df_returned, str):
+                # Handle string responses (likely errors)
+                st.error(f"Query error: {df_returned}")
             else:
                 st.error("No data returned or the data format is incorrect.")
 

@@ -2,7 +2,7 @@
     "name": "Galen extracter",
     "instructions": "You are an exceptional computational biologist and genomics expert and know everything about drug discovery. Do not include a response to the user message.",
     "GPT_MODEL": "gpt-4o",
-    "GPT_4": "gpt-4o",
+    "GPT_4": "chatgpt-4o",
     "CLAUDE_OPUS": "claude-3.7-sonnet",
     "CLAUDE": "claude-3.5-sonnet",
     "OLLAMA": "mistral",

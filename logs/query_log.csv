@@ -447,3 +447,219 @@ Peripheral Nervous System           -0.338188
                   Thyroid           -0.236543
                    Uterus           -0.287756
              Vulva/Vagina           -0.204557"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT gene_name, AVG(dependency) as avg_dependency FROM DepMap GROUP BY gene_name ORDER BY avg_dependency LIMIT 15","gene_name  avg_dependency
+   SNRPD3       -4.344366
+    RPL15       -4.129954
+      RAN       -3.934256
+   DCAF13       -3.630534
+     DNA2       -3.500998
+    HSPE1       -3.462674
+    RPL34       -3.428661
+    DCAF1       -3.203618
+    PRIM2       -3.174810
+    RPL17       -3.100316
+    SNRPF       -2.949401
+     RRM1       -2.910608
+     USO1       -2.867748
+   SNRPA1       -2.866048
+     RPS8       -2.856261"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT gene_name, AVG(dependency) as avg_dependency FROM DepMap GROUP BY gene_name ORDER BY avg_dependency LIMIT 15","gene_name  avg_dependency
+   SNRPD3       -4.344366
+    RPL15       -4.129954
+      RAN       -3.934256
+   DCAF13       -3.630534
+     DNA2       -3.500998
+    HSPE1       -3.462674
+    RPL34       -3.428661
+    DCAF1       -3.203618
+    PRIM2       -3.174810
+    RPL17       -3.100316
+    SNRPF       -2.949401
+     RRM1       -2.910608
+     USO1       -2.867748
+   SNRPA1       -2.866048
+     RPS8       -2.856261"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT gene_name, AVG(dependency) as avg_dependency FROM DepMap GROUP BY gene_name ORDER BY avg_dependency LIMIT 15","gene_name  avg_dependency
+   SNRPD3       -4.344366
+    RPL15       -4.129954
+      RAN       -3.934256
+   DCAF13       -3.630534
+     DNA2       -3.500998
+    HSPE1       -3.462674
+    RPL34       -3.428661
+    DCAF1       -3.203618
+    PRIM2       -3.174810
+    RPL17       -3.100316
+    SNRPF       -2.949401
+     RRM1       -2.910608
+     USO1       -2.867748
+   SNRPA1       -2.866048
+     RPS8       -2.856261"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, protein2, combined_score FROM protein_links ORDER BY combined_score DESC LIMIT 15","protein1 protein2  combined_score
+   FKBP4 HSP90AB1           999.0
+   FKBP4 HSP90AA1           999.0
+  SEMA3F     NRP1           999.0
+  SEMA3F     NRP2           999.0
+  SEMA3F   PLXNA3           999.0
+    CFTR SLC9A3R1           999.0
+ CYP51A1      LSS           999.0
+   USH1C    MYO7A           999.0
+   USH1C    CDH23           999.0
+   USH1C    USH1G           999.0
+    RALA    EXOC8           999.0
+    RALA   RALBP1           999.0
+    RALA   RALGDS           999.0
+    RALA    EXOC2           999.0
+    DVL2    AXIN1           999.0"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT gene_name, AVG(dependency) as avg_dependency FROM DepMap GROUP BY gene_name ORDER BY avg_dependency LIMIT 15","gene_name  avg_dependency
+   SNRPD3       -4.344366
+    RPL15       -4.129954
+      RAN       -3.934256
+   DCAF13       -3.630534
+     DNA2       -3.500998
+    HSPE1       -3.462674
+    RPL34       -3.428661
+    DCAF1       -3.203618
+    PRIM2       -3.174810
+    RPL17       -3.100316
+    SNRPF       -2.949401
+     RRM1       -2.910608
+     USO1       -2.867748
+   SNRPA1       -2.866048
+     RPS8       -2.856261"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT gene_name, AVG(dependency) as avg_dependency FROM DepMap GROUP BY gene_name ORDER BY avg_dependency LIMIT 15","gene_name  avg_dependency
+   SNRPD3       -4.344366
+    RPL15       -4.129954
+      RAN       -3.934256
+   DCAF13       -3.630534
+     DNA2       -3.500998
+    HSPE1       -3.462674
+    RPL34       -3.428661
+    DCAF1       -3.203618
+    PRIM2       -3.174810
+    RPL17       -3.100316
+    SNRPF       -2.949401
+     RRM1       -2.910608
+     USO1       -2.867748
+   SNRPA1       -2.866048
+     RPS8       -2.856261"
