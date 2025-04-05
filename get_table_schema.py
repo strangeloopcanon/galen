@@ -68,7 +68,7 @@ def extract_sql(llm_response: str) -> str:
         log.info(f"Output from LLM: {llm_response} \nExtracted SQL: {sql.group(1)}")
         return sql.group(1)
 
-    return llm_response
+    return sql
 
 def is_sql_valid(sql: str) -> bool:
     # This is a check to see the SQL is valid and should be run

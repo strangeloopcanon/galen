@@ -14,10 +14,8 @@ custom_functions = [
                         'description': 'The query that the user asked for to return information from attached SQLITE databases'
                     }
                 },
-                "required": ["query"],
-                "additionalProperties": False
-            },
-            "strict": True
+                "required": ["query"]
+            }
         }
     },
     {
@@ -32,11 +30,9 @@ custom_functions = [
                         'type': 'string',
                         'description': 'A perfect python function to do analysis as asked, comprehensive with all relevant import functions, ready to be run.'
                     }
-                },
-                "required": ["vis_code"],
-                "additionalProperties": False
+                }
             },
-            "strict": True
+            "required": ["vis_code"]
         }
     },
     {
@@ -52,10 +48,8 @@ custom_functions = [
                         'description': 'A perfect python function to do analysis as asked, comprehensive with all relevant import functions, ready to be run.'
                     }
                 },
-                "required": ["code"],
-                "additionalProperties": False
-            },
-            "strict": True
+                "required": ["code"]
+            }
         }
     },
     {
@@ -71,10 +65,8 @@ custom_functions = [
                         'description': 'Convert the query into perfect step-by-step instructions based on which a desired report will be written.'
                     }
                 },
-                "required": ["report_request"],
-                "additionalProperties": False
-            },
-            "strict": True
+                "required": ["report_request"]
+            }
         }
     },
     {
@@ -90,10 +82,8 @@ custom_functions = [
                         'description': 'A perfect, comprehensive question which will be asked so that it can be answered using the embedded index.'
                     }
                 },
-                "required": ["question"],
-                "additionalProperties": False
-            },
-            "strict": True
+                "required": ["question"]
+            }
         }
     }
 ]

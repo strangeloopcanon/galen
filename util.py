@@ -21,10 +21,10 @@ def get_schema_and_table_list(folder_path):
     return all_schema, tables_list
 
 def extract_SQL(query):
-    """Run SQL code."""
+    """Extract SQL from a query or run one directly."""
     from run_sql import main
     
-    # First, let's add more debugging
+    # Debugging 
     print(f"extract_SQL: Input query type: {type(query)}")
     if isinstance(query, list) and query:
         print(f"extract_SQL: Query list content: {query}")
@@ -41,91 +41,56 @@ def extract_SQL(query):
     
     # Check if query is SQL or not
     if not query.strip().upper().startswith("SELECT"):
-        # This might be a natural language query - we need to send it to process_openai
+        # This is a natural language query - forward to process_openai
         print(f"extract_SQL: Query is not SQL, forwarding to process_openai: {query}")
-        try:
-            # Let's test a direct SQL query first to see if the database is working
-            test_query = "SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5"
-            print(f"extract_SQL: Testing database with query: {test_query}")
-            test_result = main(test_query)
-            print(f"extract_SQL: Test query result type: {type(test_result)}")
-            if isinstance(test_result, pd.DataFrame):
-                print(f"extract_SQL: Test query successful, shape: {test_result.shape}")
-            else:
-                print(f"extract_SQL: Test query failed: {test_result}")
-                
-            # Now proceed with the original plan to use process_openai
-            try:
-                from process_openai import main as process_query
-                print(f"extract_SQL: Calling process_openai with query: {query[:100]}")
-                result = process_query([{'role': 'user', 'content': query}])
-                print(f"extract_SQL: process_openai returned type: {type(result)}")
-                return result
-            except Exception as process_error:
-                print(f"extract_SQL: Error in process_openai: {process_error}")
-                
-                # Create a fallback for when process_openai fails
-                if "protein" in query.lower():
-                    fallback_query = "SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 10"
-                elif "gene" in query.lower() or "dependency" in query.lower():
-                    fallback_query = "SELECT gene_name, COUNT(*) as count FROM DepMap GROUP BY gene_name ORDER BY count DESC LIMIT 10"
-                else:
-                    fallback_query = "SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 10"
-                    
-                print(f"extract_SQL: Using fallback query: {fallback_query}")
-                fallback_result = main(fallback_query)
-                if isinstance(fallback_result, pd.DataFrame):
-                    print(f"extract_SQL: Fallback query successful, returning DataFrame")
-                    return fallback_result
-                else:
-                    # Create a hardcoded DataFrame as last resort
-                    print("extract_SQL: Creating hardcoded DataFrame as last resort")
-                    return pd.DataFrame({
-                        'protein1': ['GAPDH', 'ACTB', 'TP53', 'AKT1', 'MYC'],
-                        'frequency': [9357, 7773, 7443, 7179, 7147],
-                        'note': ['Fallback data', 'Fallback data', 'Fallback data', 
-                                 'Fallback data', 'Fallback data']
-                    })
-        except Exception as e:
-            print(f"extract_SQL: Critical error: {str(e)}")
-            # Last resort fallback - create a hardcoded DataFrame
-            return pd.DataFrame({
-                'protein1': ['GAPDH', 'ACTB', 'TP53', 'AKT1', 'MYC'],
-                'frequency': [9357, 7773, 7443, 7179, 7147],
-                'note': ['Last resort fallback', 'Last resort fallback', 'Last resort fallback', 
-                         'Last resort fallback', 'Last resort fallback']
-            })
+        from process_openai import main as process_query
+        return process_query([{'role': 'user', 'content': query}])
     
     # For SQL queries
-    clean_query = query.strip()
-    
-    # Replace incorrect table names
-    table_replacements = {
-        "FROM proteins": "FROM protein_links",
-        "FROM Proteins": "FROM protein_links",
-        "FROM PROTEINS": "FROM protein_links"
-    }
-    
-    for wrong, correct in table_replacements.items():
-        if wrong in clean_query:
-            clean_query = clean_query.replace(wrong, correct)
-            print(f"extract_SQL: Modified query to use correct table: {clean_query}")
-    
-    # Execute the query
-    print(f"extract_SQL: Executing SQL query: {clean_query}")
+    print(f"extract_SQL: Executing SQL query: {query}")
     try:
-        df = main(clean_query)  # (query, log_path)
+        df = main(query)
+        
+        # Print debug information
         print(f"extract_SQL: Type of df returned: {type(df)}")
         if isinstance(df, pd.DataFrame):
             print(f"extract_SQL: DataFrame shape: {df.shape}")
             print(f"extract_SQL: DataFrame head:\n{df.head()}")
         else:
             print(f"extract_SQL: Non-DataFrame result: {df}")
+        
         return df
+        
     except Exception as e:
-        error_msg = f"Error executing SQL query: {str(e)}"
-        print(f"extract_SQL ERROR: {error_msg}")
-        return error_msg
+        print(f"extract_SQL ERROR: SQL query execution failed: {e}")
+        
+        # Check if it's a table name issue in the query
+        error_str = str(e).lower()
+        if "no such table" in error_str:
+            # Extract the incorrect table name
+            import re
+            match = re.search(r"no such table:\s*(\w+)", error_str)
+            if match:
+                bad_table = match.group(1)
+                print(f"extract_SQL: Detected invalid table name: {bad_table}")
+                
+                # Fix the query by replacing the bad table with the appropriate one
+                if "gene" in bad_table or "dependency" in bad_table:
+                    fixed_query = query.replace(bad_table, "DepMap")
+                    print(f"extract_SQL: Fixed query: {fixed_query}")
+                    
+                    # Try again with the fixed query
+                    try:
+                        print("extract_SQL: Retrying with fixed query...")
+                        df = main(fixed_query)
+                        if isinstance(df, pd.DataFrame):
+                            print(f"extract_SQL: Query successful after fixing table name! Shape: {df.shape}")
+                            return df
+                    except Exception as retry_error:
+                        print(f"extract_SQL: Retry failed: {retry_error}")
+        
+        # If we get here, all attempts have failed
+        raise
 
 def visualise(df):
     """
@@ -136,8 +101,12 @@ def visualise(df):
         # Call the visualize function from run_visualise module
         from run_visualise import visualize
         
+        # Print debug info
+        print(f"visualise: Calling visualization with dataframe of type: {type(df)}")
+        if isinstance(df, pd.DataFrame):
+            print(f"visualise: DataFrame shape: {df.shape}")
+        
         # Pass the dataframe to visualize and return the result
-        # The function is designed to always return a figure
         return visualize(df)
     except Exception as e:
         # If visualization fails for any reason, create a simple message figure
@@ -156,6 +125,7 @@ def visualise(df):
             return None
 
 def execute_function_call(response):
+    """Execute function calls from LLM responses."""
     # Determine the caller file
     stack = inspect.stack()
     caller_file = stack[1].filename
@@ -224,7 +194,25 @@ def execute_function_call(response):
             return None
     
     else:
-        print("Unknown caller file")
-        return None
+        # For other callers, attempt to handle in a reasonable way
+        print(f"Warning: Called from unexpected file: {caller_file}")
+        try:
+            # Try to handle as OpenAI response if it has the right structure
+            if hasattr(response, 'choices') and hasattr(response.choices[0].message, 'tool_calls'):
+                tool_call = response.choices[0].message.tool_calls[0]
+                function_name = tool_call.function.name
+                arguments = json.loads(tool_call.function.arguments)
+                
+                if function_name == "extract_SQL":
+                    query = arguments["query"]
+                    result = extract_SQL(query)
+                else:
+                    result = None
+            else:
+                # Just try to run it as SQL
+                result = extract_SQL(response)
+        except Exception as e:
+            print(f"Error handling response from unknown caller: {e}")
+            result = None
     
     return result

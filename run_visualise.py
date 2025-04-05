@@ -20,103 +20,95 @@ info = read_json(os.path.join(config_path, 'info.json'))
 GPT_MODEL = info.get('GPT_4')
 
 def visualize(results_df):
-    """
-    Simple visualization function that ensures it always returns a matplotlib figure.
-    """
-    import matplotlib.pyplot as plt
-    import matplotlib
-    matplotlib.use('Agg')  # Non-interactive backend for server environments
-    
-    # Debug the input
-    print(f"Visualize received data type: {type(results_df)}")
-    
-    # Create a figure for any result type
-    fig, ax = plt.subplots(figsize=(10, 6))
-    
-    # Handle error case - string input
-    if isinstance(results_df, str):
-        ax.text(0.5, 0.5, "Cannot visualize string input", fontsize=14, ha='center', va='center')
-        ax.text(0.5, 0.4, results_df[:100] + "..." if len(results_df) > 100 else results_df, 
-                fontsize=10, ha='center', va='center', wrap=True)
-        ax.axis('off')
-        return fig
-        
-    # Handle non-DataFrame input
-    if not isinstance(results_df, pd.DataFrame):
-        ax.text(0.5, 0.5, f"Cannot visualize {type(results_df).__name__}", 
-                fontsize=14, ha='center', va='center')
-        ax.axis('off')
-        return fig
-    
-    # Check for empty DataFrame
-    if results_df.empty:
-        ax.text(0.5, 0.5, "No data to visualize (empty DataFrame)", 
-                fontsize=14, ha='center', va='center')
-        ax.axis('off')
-        return fig
-    
-    print(f"Visualizing DataFrame with columns: {results_df.columns.tolist()}")
-    
-    # For simplicity, create a basic bar chart for any data with numeric columns
-    numeric_cols = results_df.select_dtypes(include=['number']).columns.tolist()
-    string_cols = results_df.select_dtypes(include=['object']).columns.tolist()
-    
-    # Choose what to plot based on available columns
-    if numeric_cols:
-        # We have numeric data to plot
-        value_col = numeric_cols[0]  # Use first numeric column
-        
-        if string_cols:
-            # We have a string column to use as categories
-            category_col = string_cols[0]
-            # Limit to 20 rows for readability and sort by value
-            plot_df = results_df.sort_values(by=value_col, ascending=False).head(20)
-            plot_df.plot(kind='bar', x=category_col, y=value_col, ax=ax, color='skyblue')
-            plt.xticks(rotation=45, ha='right')
-            ax.set_xlabel(category_col)
+    client = OpenAI()
+
+    # Define assistant settings
+    assistant_name = "Slide Generator"
+    os.makedirs(output_directory, exist_ok=True)
+    file_name = "Chart.png"
+    output_file_name = os.path.join(output_directory, file_name)
+    assistant_instruction = (
+        r"Generate {} file, always. You are a subject-matter expert and create amazing charts."
+        r"You are incredible at solving difficult data analysis problems. You create beautiful layouts, colors, fonts, "
+        r"and styling must be modern and easy to read. Make content engaging. Make the file id available to download."
+        .format(output_file_name)
+    )
+
+    # Serialize DataFrame to CSV for message passing
+    # results_df_csv = results_df.to_csv(index=False)
+
+    # Update prompt to include DataFrame usage
+    prompt_user = (
+        "Create a perfectly understandable, clear, chart. Here is the data you need to visualize:\n" + results_df.to_string()
+    )
+
+    # Create an assistant
+    assistant = client.beta.assistants.create(
+        name=assistant_name,
+        instructions=assistant_instruction,
+        tools=[{"type": "code_interpreter"}],
+        model=GPT_MODEL)
+
+    # Create a thread
+    thread = client.beta.threads.create()
+
+    # Create a message
+    message = client.beta.threads.messages.create(
+        thread_id=thread.id,
+        role="user",
+        content=prompt_user)
+
+    # Start the run
+    run = client.beta.threads.runs.create(
+      thread_id=thread.id,
+      assistant_id=assistant.id)
+
+    # Wait for the run to complete
+    timeout = 560
+    interval_time = 5
+    time_taken = 0
+    while time_taken < timeout:
+        run = client.beta.threads.runs.retrieve(
+            thread_id=thread.id,
+            run_id=run.id)
+
+        if run.status == 'completed':
+            break
+        elif run.status == 'failed':
+            print("Run failed.")
+            return
         else:
-            # No string columns, plot numeric column against index
-            plot_df = results_df.head(20)
-            plot_df.plot(kind='bar', y=value_col, ax=ax, color='skyblue')
-            ax.set_xlabel("Index")
-        
-        # Set title and labels
-        ax.set_title(f"Data Visualization: {value_col}")
-        ax.set_ylabel(value_col)
-        ax.grid(axis='y', linestyle='--', alpha=0.7)
+            print(run.status)
+            time.sleep(interval_time)
+            time_taken += interval_time
+
+    # Retrieve messages
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+
+    for message in messages.data:
+        print(f"message so far is: {message}")
+        file_id = get_file_id_from_message(message)
+        file_content = client.files.content(file_id)
+        file_data_bytes = file_content.read()
+        with open(output_file_name, "wb") as file:
+            file.write(file_data_bytes)
+        print(f"File saved as {output_file_name}")
+        return
+
+    print("No files were generated or saved.")
+
+def get_file_id_from_message(message):
+    if message.content and hasattr(message.content[0], 'image_file'):
+        return message.content[0].image_file.file_id
+    elif message.attachments and hasattr(message.attachments[0], 'file_id'):
+        return message.attachments[0].file_id
     else:
-        # No numeric data, create a text display
-        ax.text(0.5, 0.8, "Data Preview (no numeric columns to plot)", 
-                fontsize=14, ha='center', va='center')
-        
-        # Display the first few rows as text
-        if string_cols:
-            col = string_cols[0]
-            for i, val in enumerate(results_df[col].head(8)):
-                ax.text(0.5, 0.7 - i*0.07, str(val)[:50], 
-                       fontsize=10, ha='center')
-        
-        ax.axis('off')
-    
-    plt.tight_layout()
-    
-    # Save the figure with a timestamp to avoid conflicts
-    try:
-        os.makedirs(output_directory, exist_ok=True)
-        timestamp = pd.Timestamp.now().strftime("%Y%m%d_%H%M%S")
-        output_file_name = os.path.join(output_directory, f"Chart_{timestamp}.png")
-        plt.savefig(output_file_name)
-        print(f"Figure saved as {output_file_name}")
-    except Exception as e:
-        print(f"Warning: Could not save figure: {e}")
-    
-    # Always return the figure object
-    return fig
+        return None
 
 if __name__ == "__main__":
     # Example DataFrame
     results_df = pd.DataFrame({
-        'protein1': ['GAPDH', 'ACTB', 'TP53', 'AKT1', 'MYC'],
-        'frequency': [9357, 7773, 7443, 7179, 7147]
+        'Epoch': [1, 2, 3, 4, 5],
+        'Loss': [0.4, 0.35, 0.3, 0.25, 0.2]
     })
     visualize(results_df)
