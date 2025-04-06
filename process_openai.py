@@ -53,11 +53,9 @@ def main(query):
 
     # Extract the dataframe
     df = execute_function_call(response)
-    
-    # Visualize the dataframe
     if df is not None:
         chart = visualise(df)
-        return chart
+        return df
     else:
         print("Failed to extract dataframe")
         return None
