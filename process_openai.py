@@ -37,6 +37,15 @@ def main(query):
 
     client = OpenAI()
 
+    subprocess.run(['python3', 'get_table_schema.py'])
+    final_schema, tables = get_schema_and_table_list(config_path)
+    query = f"""Extract dependency data for gene EP300, group them by OncotreeLineage and calculate averages. The schema is {final_schema} and {tables}.
+    The databases are already attached as: 
+    ATTACH DATABASE 'db/ProteinNetwork.db' AS ProteinNetwork
+    ATTACH DATABASE 'db/DepMap.db' AS DepMap
+
+    Ensure we use those names. You do not need to attach the DBs again. Make sure you use the right table names. You are writing a SQL query to answer the question from SQLITE."""
+    
     response = call_fn(client, query, GPT_MODEL, custom_functions)
 
     # Debugging: Print the entire response object

@@ -18,7 +18,7 @@ log_path = os.path.join(dirname, 'logs')
 output_directory = "output"
 
 info = read_json(os.path.join(config_path, 'info.json'))
-GPT_MODEL = info.get('GPT_4')
+GPT_MODEL = info.get('GPT_MODEL')
 
 def visualize(results_df):
     client = OpenAI()

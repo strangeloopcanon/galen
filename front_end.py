@@ -32,7 +32,7 @@ def main():
     openai_client = OpenAI(api_key=openai_api_key)
 
     INSTRUCTION = info.get('DB_instructions')
-    GPT_MODEL = info.get('GPT_4')
+    GPT_MODEL = info.get('GPT_MODEL')
     VISUAL_INSTRUCTIONS = info.get('Visual_Builder')
 
     st.title("Galen: Data Analysis for Oncology")
@@ -63,7 +63,6 @@ def main():
                 visualization_placeholder.pyplot(chart)
             else:
                 st.error("No data returned or the data format is incorrect.")
-
 
     if ask_research_questions:
         # Input for research paper questions
