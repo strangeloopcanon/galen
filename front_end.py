@@ -30,7 +30,6 @@ def main():
             return
 
     openai_client = OpenAI(api_key=openai_api_key)
-
     INSTRUCTION = info.get('DB_instructions')
     GPT_MODEL = info.get('GPT_MODEL')
     VISUAL_INSTRUCTIONS = info.get('Visual_Builder')

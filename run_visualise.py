@@ -24,7 +24,7 @@ def visualize(results_df):
     client = OpenAI()
 
     # Define assistant settings
-    assistant_name = "Slide Generator"
+    assistant_name = "Chart Generator"
     os.makedirs(output_directory, exist_ok=True)
     file_name = "Chart.png"
     output_file_name = os.path.join(output_directory, file_name)
@@ -89,12 +89,21 @@ def visualize(results_df):
     for message in messages.data:
         print(f"message so far is: {message}")
         file_id = get_file_id_from_message(message)
+        if not file_id:
+            continue
         file_content = client.files.content(file_id)
         file_data_bytes = file_content.read()
         with open(output_file_name, "wb") as file:
             file.write(file_data_bytes)
         print(f"File saved as {output_file_name}")
-        return
+        
+        # Load the saved image and create a matplotlib figure from it
+        from matplotlib import image as mpimg
+        img = mpimg.imread(output_file_name)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.imshow(img)
+        ax.axis("off")
+        return fig
 
     print("No files were generated or saved.")
 
