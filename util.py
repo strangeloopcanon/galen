@@ -20,7 +20,7 @@ def get_schema_and_table_list(folder_path):
 
     return all_schema, tables_list
 
-def extract_SQL(query):
+def extract_SQL(query, recursion_depth=0, max_depth=1):
     """Extract SQL from a query or run one directly."""
     from run_sql import main
     
@@ -42,6 +42,8 @@ def extract_SQL(query):
     # Check if query is SQL or not
     if not query.strip().upper().startswith("SELECT"):
         # This is a natural language query - forward to process_openai
+        if recursion_depth >= max_depth:
+            raise Exception("Maximum recursion depth reached in extract_SQL")
         print(f"extract_SQL: Query is not SQL, forwarding to process_openai: {query}")
         from process_openai import main as process_query
         return process_query([{'role': 'user', 'content': query}])
@@ -50,7 +52,6 @@ def extract_SQL(query):
     print(f"extract_SQL: Executing SQL query: {query}")
     try:
         df = main(query)
-        
         # Print debug information
         print(f"extract_SQL: Type of df returned: {type(df)}")
         if isinstance(df, pd.DataFrame):
@@ -58,12 +59,10 @@ def extract_SQL(query):
             print(f"extract_SQL: DataFrame head:\n{df.head()}")
         else:
             print(f"extract_SQL: Non-DataFrame result: {df}")
-        
         return df
         
     except Exception as e:
         print(f"extract_SQL ERROR: SQL query execution failed: {e}")
-        
         # Check if it's a table name issue in the query
         error_str = str(e).lower()
         if "no such table" in error_str:
@@ -91,6 +90,22 @@ def extract_SQL(query):
         
         # If we get here, all attempts have failed
         raise
+
+# In utils.py near your visualise function
+def execute_vis_code(code_str, df=None):
+    """
+    Execute the provided Python code string in a controlled namespace.
+    The code must assign the final matplotlib figure to a variable 'fig'.
+    """
+    local_vars = {}
+    if df is not None:
+        local_vars['df'] = df
+    try:
+        exec(code_str, globals(), local_vars)
+    except Exception as e:
+        print(f"Error executing visualization code: {e}")
+        return None
+    return local_vars.get('fig')
 
 def visualise(df):
     """
@@ -140,17 +155,17 @@ def execute_function_call(response):
             # Check if there are any tool calls
             if not hasattr(response.choices[0].message, 'tool_calls') or not response.choices[0].message.tool_calls:
                 print("No tool calls in the response")
-                return None
-                
+                return None                
             # Get the first tool call
             tool_call = response.choices[0].message.tool_calls[0]
-            
             # Print tool call ID for tracking
             print(f"Processing tool call ID: {tool_call.id}")
             
             # Extract function name and arguments
             function_name = tool_call.function.name
+            print(f"Processing function_name: {function_name}")
             arguments = json.loads(tool_call.function.arguments)
+            print(f"Processing arguments: {arguments}")
         except (AttributeError, json.JSONDecodeError) as e:
             print("Error processing tool_calls:", e)
             print("Response structure:", response)
@@ -162,7 +177,7 @@ def execute_function_call(response):
             result = extract_SQL(query)
         elif function_name == "visualise":
             code = arguments["vis_code"]
-            result = visualise(code)
+            result = execute_vis_code(code, df if 'df' in globals() else None)
         elif function_name == "data_analysis":
             code = arguments["code"]
             # Call appropriate function for data analysis
@@ -180,18 +195,6 @@ def execute_function_call(response):
             result = f"QnA function executed with question: {question[:50]}..."
         else:
             result = f"Error: function {function_name} does not exist"
-    
-    elif 'process_groq.py' in caller_file:
-        # Directly handle the SQL extraction and visualization for process_groq.py
-        try:
-            sql_query = response
-            result = extract_SQL(sql_query)
-            if result is not None:
-                result = visualise(result)
-        except (AttributeError, KeyError) as e:
-            print("Error processing response:", e)
-            print("Response structure:", response)
-            return None
     
     else:
         # For other callers, attempt to handle in a reasonable way

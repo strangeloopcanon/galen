@@ -1,11 +1,10 @@
 # custom_functions.py
-
 custom_functions = [
     {
         "type": "function",
         "function": {
             'name': 'extract_SQL',
-            'description': 'Generate SQL query to answer a given question from attached SQLITE databases.',
+            'description': 'Generate a SQLite-compatible SQL query to answer a given question from the attached SQLITE databases. Do not use unsupported functions like PERCENTILE_CONT. Instead, compute using SQLite-friendly methods or omit them if necessary.',
             'parameters': {
                 'type': 'object',
                 'properties': {

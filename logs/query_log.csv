@@ -5053,3 +5053,15 @@ ORDER BY
     TP53       7443
     AKT1       7179
      MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"
+"SELECT protein1, COUNT(*) as frequency FROM protein_links GROUP BY protein1 ORDER BY frequency DESC LIMIT 5","protein1  frequency
+   GAPDH       9357
+    ACTB       7773
+    TP53       7443
+    AKT1       7179
+     MYC       7147"

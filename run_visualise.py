@@ -2,6 +2,7 @@ import os
 import time
 import json
 import pandas as pd
+import matplotlib.pyplot as plt
 from openai import OpenAI
 
 def read_json(file_path):
