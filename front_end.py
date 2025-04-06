@@ -48,18 +48,18 @@ def main():
             user_text_query = st.text_input("What are you curious about in the data?", key="db_query")
             user_visual_type_query = st.text_input("How do you want to visualize the data?", key="visual_type")
 
-        with col2:  # Output column for DB queries
-            dataframe_placeholder = st.empty()
-            visualization_placeholder = st.empty()
-
         if user_text_query and user_visual_type_query:
             user_prompt = [user_text_query]
-            # Using modular extract_SQL and visualise functions
             df_returned = extract_SQL(user_prompt)
             if isinstance(df_returned, pd.DataFrame) and not df_returned.empty:
-                dataframe_placeholder.write(df_returned)
+                st.write("### Data Table")
+                st.write(df_returned)
                 chart = visualise(df_returned)
-                visualization_placeholder.pyplot(chart)
+                if chart is not None:
+                    st.write("### Chart")
+                    st.pyplot(chart)
+                else:
+                    st.error("Chart generation failed.")
             else:
                 st.error("No data returned or the data format is incorrect.")
 
